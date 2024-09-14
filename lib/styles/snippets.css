@@ -1,0 +1,4893 @@
+
+/* This snippet requires Contextual Typography 2.2.1+ */
+/* https://github.com/mgmeyers/obsidian-contextual-typography */
+
+:root {
+  --content-base-width: 45rem;
+}
+
+/* ----------------------------------------- */
+/* Handle overall content width */
+/* ----------------------------------------- */
+
+/* Wrapper with padding keeps content from bumping the edges */
+.markdown-preview-view.is-readable-line-width {
+  padding-inline: 30px;
+}
+
+/* Container controlling overall max content width */
+.markdown-preview-view.is-readable-line-width .markdown-preview-section {
+  width: 100%;
+  max-width: var(--content-max-width, 45rem); /* Second value is fallback in case user isn't using Style settings */
+}
+
+/* All children of overall container are divs */
+.markdown-preview-view.is-readable-line-width .markdown-preview-section > div {
+  margin-inline: auto;
+  width: min(var(--content-base-width), 100%);
+}
+
+/* Specific children of overall container that contain media */
+.markdown-preview-view.is-readable-line-width .markdown-preview-section div[data-is-embed] {
+  width: 100%;
+}
+
+/* ----------------------------------------- */
+/* Make media items display in rows */
+/* ----------------------------------------- */
+
+/* p tags wrap each row */
+.markdown-preview-view.is-readable-line-width .markdown-preview-section div[data-is-embed] > p {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(0, 1fr));
+  grid-gap: var(--media-grid-gap, 7px);
+  margin: 0;
+}
+
+/* Remove breaks from the document flow */
+.markdown-preview-view.is-readable-line-width .markdown-preview-section div[data-is-embed] > p br {
+  display: none;
+}
+
+/* Media items sourced from your vault are wrapped in a span – media linked from the web is not wrapped */
+.markdown-preview-view.is-readable-line-width .markdown-preview-section div[data-is-embed] > p > span {
+  display: flex;
+}
+
+/* Apply this to all img/video tags in a row whether they're wrapped in a span or not */
+.markdown-preview-view.is-readable-line-width .markdown-preview-section div[data-is-embed] > p img,
+.markdown-preview-view.is-readable-line-width .markdown-preview-section div[data-is-embed] > p video {
+  flex: 1;
+  align-self: stretch;
+  object-fit: cover;
+  border-radius: var(--media-border-radius, 4px);
+}
+
+/* Create gaps between rows */
+.markdown-preview-view.is-readable-line-width .markdown-preview-section div[data-is-embed] + div[data-is-embed] {
+  margin-top: var(--media-grid-gap, 7px);
+}
+
+/* ----------------------------------------- */
+/* Style settings */
+/* ----------------------------------------- */
+
+/* @settings
+name: Media Grid Snippet
+id: media-grid-snippet
+settings:
+  -
+      id: content-max-width
+      title: Grid width
+      description: Set the max width of your grid layouts.
+      type: variable-select
+      allowEmpty: false
+      default: var(--content-base-width)
+      options:
+          -
+              label: Base width
+              value: var(--content-base-width)
+          -
+              label: Small
+              value: calc(var(--content-base-width) + 5%)
+          -
+              label: Medium
+              value: calc(var(--content-base-width) + 10%)
+          -
+              label: Large
+              value: calc(var(--content-base-width) + 20%)
+          -
+              label: Full width
+              value: 100%
+  -
+      id: media-grid-gap
+      title: Grid gap
+      description: Set the gap size between items in your grid layouts.
+      type: variable-number-slider
+      format: px
+      default: 7
+      min: 0
+      max: 80
+      step: 1
+  -
+      id: media-border-radius
+      title: Border radius
+      description: Set the border radius of your images and videos.
+      type: variable-number-slider
+      format: px
+      default: 4
+      min: 0
+      max: 40
+      step: 1
+*/
+
+/* checkbox alignment */
+.markdown-preview-view .task-list-item-checkbox {
+	width: 15px;
+	height: 15px;
+	top: 0px
+}
+
+/* Apple style checkbox */
+input[type=checkbox] {
+    vertical-align: middle;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    border: 1px solid var(--text-faint);
+    padding: 0;
+}
+
+input[type=checkbox]:focus{
+  outline:0;
+}
+
+input[type=checkbox]:checked {
+    background-color: var(--text-accent-hover);
+    border: 1px solid var(--text-accent-hover);
+    background-position: center;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml; utf8, <svg width="12px" height="10px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-4.000000, -6.000000)" fill="%23ffffff"><path d="M8.1043257,14.0367999 L4.52468714,10.5420499 C4.32525014,10.3497722 4.32525014,10.0368095 4.52468714,9.8424863 L5.24777413,9.1439454 C5.44721114,8.95166768 5.77142411,8.95166768 5.97086112,9.1439454 L8.46638057,11.5903727 L14.0291389,6.1442083 C14.2285759,5.95193057 14.5527889,5.95193057 14.7522259,6.1442083 L15.4753129,6.84377194 C15.6747499,7.03604967 15.6747499,7.35003511 15.4753129,7.54129009 L8.82741268,14.0367999 C8.62797568,14.2290777 8.3037627,14.2290777 8.1043257,14.0367999"></path></g></g></svg>');
+.markdown-preview-view .task-list-item-checkbox { margin-left:-25px; }
+.markdown-preview-view .task-list-item { padding-inline-start:25px; }
+
+/* Checkbox as per Molecule theme */
+.markdown-preview-view .task-list-item-checkbox {
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  border: 1px solid var(--text-muted);
+  border-radius: 2px;
+  position: relative;
+  width: 1.3em;
+  height: 1.3em;
+  margin: 12px;
+  filter: none;
+  outline: none;
+  margin-right: 4px;
+  margin-bottom: 1px;
+  cursor: pointer;
+  vertical-align: center;
+}
+
+.markdown-preview-view .task-list-item-checkbox:checked {
+  border: none;
+  background-color: var(--base2);
+}
+
+.markdown-preview-view .task-list-item-checkbox:checked::before {
+  content: ' ';
+  position: absolute;
+  background-color: white;
+  left: 2px;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  -webkit-mask-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 14 14\'%3E%3Cpolygon points=\'5.5 11.9993304 14 3.49933039 12.5 2 5.5 8.99933039 1.5 4.9968652 0 6.49933039\'%3E%3C/polygon%3E%3C/svg%3E');
+}
+
+/* Remove strikethrough from completed to-do lists/checkbox */
+.markdown-preview-view ul > li.task-list-item.is-checked {
+    text-decoration: none;
+    color: inherit;
+}
+
+a.tag,
+.kanban-plugin .kanban-plugin__item-tags .kanban-plugin__item-tag {
+    position: relative;
+    display: inline-block;
+    margin: .125em;
+}
+a.tag::before,
+.cm-formatting-hashtag::before {
+    font-size: .85em;
+    content: "🔗";
+    display: inline-block;
+    position: relative;
+    z-index: .5;
+    right: -.7em;
+    padding: 0 2px 0 0;
+    background-color: var(--background-primary);
+}
+
+/*
+author: FireIsGood
+source: https://discord.com/channels/686053708261228577/702656734631821413/1092995965583114341
+*/
+
+[data-callout="tabbed"] {
+  outline: 0px solid var(--color-base-30);
+  border-radius: 0.5rem;
+  background-color: transparent;
+}
+[data-callout="tabbed"] > .callout-content {
+  padding: 0.25rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, max-content));
+  gap: 0 1rem;
+
+  justify-content: center;
+}
+[data-callout="tabbed"] > .callout-title {
+  display: none;
+}
+[data-callout="tabbed"] > .callout-content p {
+  margin: 0;
+}
+[data-callout="tabbed"] > .callout-content label > input {
+  display: none;
+}
+[data-callout="tabbed"] > .callout-content label {
+  width: 100%;
+  display: flex;
+  padding: 0.15rem 2rem;
+  margin: 0rem 1rem;
+  border-radius: 1rem;
+
+  color: #ccc;
+  background-color: #9678CE;
+
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  justify-content: center;
+}
+[data-callout="tabbed"] > .callout-content label:has(input:checked) {
+  color: white;
+  background-color: #009688;
+}
+[data-callout="tabbed"]
+  > .callout-content
+  p:not(:has(label input:checked))
+  + blockquote {
+  display: none;
+}
+[data-callout="tabbed"] > .callout-content > blockquote {
+  order: 999;
+  grid-column: 1 / -1;
+
+  background-color: transparent;
+  padding-left: 0;
+  border: 0;
+}
+
+/*------------------------------------------------------------------------------
+ *              Obsidian Colored Sidebar Items by CyanVoxel v2.0.0
+ *
+ *                  A colored sidebar CSS snippet inspired by
+ *                  the "Coloured Folders" snippet by Lithou.
+ *
+ T *his snippet targets folders beginning with numbered prefixes, and applies full
+ color formatting based on the root colors listed below. The prefixes are both
+ customizable and extensible; feel free to change, add, and remove them based on
+ your own titles and vault structure! By default I have a range of 8+1 colors,
+ however I've provided some other common colors as a starting point for your own
+ customization. Just swap out the color variable names in the prefix groups.
+
+ ------------------------------------------------------------------------------*/
+
+:root {
+    /* ================================ Colors ================================ */
+    --red: #e22c3c;                /* Default Prefix: None */
+    --red-orange: #e9404b;         /* Default Prefix: None */
+    --orange: #ee6748;             /* Default Prefix: None */
+    --amber: #fa9f50;              /* Default Prefix: None */
+    --yellow: #ffd85e;             /* Default Prefix: None */
+    --lime: #97e768;               /* Default Prefix: None */
+    --mint: #52eea3;               /* Default Prefix: 00 */
+    --cyan: #51e1e9;               /* Default Prefix: 01 */
+    --cool-cyan: #43cfea;          /* Default Prefix: None */
+    --light-blue: #54b6f8;         /* Default Prefix: 02 */
+    --blue: #437cf3;               /* Default Prefix: 03 */
+    --blue-violet: #6f51f4;        /* Default Prefix: None */
+    --violet: #9446f8;             /* Default Prefix: 04 */
+    --purple: #c952ed;             /* Default Prefix: 05 */
+    --magenta: #e54f9b;            /* Default Prefix: 06 */
+    --hot-red: #e3365e;            /* Default Prefix: 07 */
+    --cool-gray: #515768;          /* Default Prefix: 99 */
+    --indigo: #AC3BFF;             /* Default Prefix : 19 */
+
+    --default-text-color: #d0d0d0;
+    --highlight: #fff;
+    --shadow: #0b0c2c;
+    --red-hot: #e3365e;
+
+    --nav-item-weight-hover: bold;
+}
+
+/* Light Theme Specific Properties */
+.theme-light {
+    --contrast-color: var(--shadow);
+    --default-text-color: var(--shadow);
+    --bg-contrast-amount: 70%;
+    --fg-contrast-amount: 30%;
+    --medium-contrast-amount: 60%;
+    --active-contrast-amount: 30%;
+
+    /* Darker Versions of Bright Colors for Light Theme */
+    --yellow: color-mix(in srgb, #ffd85e 90%, var(--shadow));
+    --lime: color-mix(in srgb, #97e768 90%, var(--shadow));
+    --mint: color-mix(in srgb, #52eea3 85%, var(--shadow));
+    --cyan: color-mix(in srgb, #51e1e9 85%, var(--shadow));
+    --cool-cyan: color-mix(in srgb, #43cfea 85%, var(--shadow));
+    --light-blue: color-mix(in srgb, #54b6f8 90%, var(--shadow));
+}
+
+/* Dark Theme Specific Properties */
+.theme-dark {
+    --contrast-color: var(--highlight);
+    --bg-contrast-amount: 15%;
+    --fg-contrast-amount: 40%;
+    --medium-contrast-amount: 20%;
+    --active-contrast-amount: 10%;
+}
+
+/* All Folder Titles */
+.nav-folder-title {
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+/* Narrower Padding on Desktop*/
+@media only screen and (min-width: 768px) {
+    .nav-file-title,
+    .nav-folder-title {
+        /* padding: 3px 5px 2px 4px !important; */
+        padding-top: 3px !important;
+        padding-right: 5px !important;
+        padding-bottom: 2px !important;
+        padding-left: 15px;
+    }
+}
+
+/*
+ = *=========================== Folder Title Prefixes =============================
+ The following groups of prefixes are divided by the numbering prefix that they
+ target. For example, prefix '00' targets any folder titles beginning with '00',
+ such as '00 - Maps of Content'. The only other piece of information that changes
+ between the prefix groups are the color variables. Change or expand on any of
+ these to suit your own folder structure and vault theme!
+ */
+
+/* ------------------------------- 00 Prefix -------------------------------- */
+.nav-folder-title[data-path^="00"] {
+    color: var(--mint);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--mint) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--mint) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--mint) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--mint) 60%, transparent);
+}
+.nav-folder-title[data-path^="00"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--mint) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="00"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--mint) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="00"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--mint) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--mint) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--mint) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--mint) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 01 Prefix -------------------------------- */
+.nav-folder-title[data-path^="01"] {
+    color: var(--cyan);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--cyan) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--cyan) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--cyan) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--cyan) 60%, transparent);
+}
+.nav-folder-title[data-path^="01"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--cyan) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="01"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--cyan) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="01"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--cyan) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--cyan) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--cyan) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--cyan) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 02 Prefix -------------------------------- */
+.nav-folder-title[data-path^="02"] {
+    color: var(--light-blue);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--light-blue) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--light-blue) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--light-blue) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--light-blue) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="02"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--light-blue) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="02"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--light-blue) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="02"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--light-blue) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--light-blue) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--light-blue) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--light-blue) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 03 Prefix -------------------------------- */
+.nav-folder-title[data-path^="03"] {
+    color: var(--blue);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--blue) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--blue) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--blue) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--blue) 60%, transparent);
+}
+.nav-folder-title[data-path^="03"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--blue) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="03"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--blue) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="03"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--blue) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--blue) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--blue) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--blue) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 04 Prefix -------------------------------- */
+.nav-folder-title[data-path^="04"] {
+    color: var(--violet);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--violet) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--violet) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--violet) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--violet) 60%, transparent);
+}
+.nav-folder-title[data-path^="04"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--violet) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="04"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--violet) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="04"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--violet) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--violet) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--violet) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--violet) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 05 Prefix -------------------------------- */
+.nav-folder-title[data-path^="05"] {
+    color: var(--purple);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--purple) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--purple) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--purple) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--purple) 60%, transparent);
+}
+.nav-folder-title[data-path^="05"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--purple) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="05"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--purple) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="05"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--purple) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--purple) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--purple) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--purple) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 06 Prefix -------------------------------- */
+.nav-folder-title[data-path^="06"] {
+    color: var(--magenta);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--magenta) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--magenta) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--magenta) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--magenta) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="06"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--magenta) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="06"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--magenta) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="06"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--magenta) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--magenta) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--magenta) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--magenta) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 07 Prefix -------------------------------- */
+.nav-folder-title[data-path^="07"] {
+    color: var(--hot-red);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--hot-red) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--hot-red) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--hot-red) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--hot-red) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="07"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--hot-red) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="07"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--hot-red) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="07"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--hot-red) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--hot-red) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--hot-red) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--hot-red) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 99 Prefix -------------------------------- */
+.nav-folder-title[data-path^="99"] {
+    color: var(--cool-gray);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--cool-gray) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--cool-gray) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--cool-gray) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--cool-gray) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="99"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--cool-gray) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="99"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--cool-gray) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="99"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--cool-gray) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--cool-gray) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--cool-gray) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--cool-gray) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 08 Prefix -------------------------------- */
+.nav-folder-title[data-path^="08"] {
+    color: var(--red);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--red) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--red) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--red) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--red) 60%, transparent);
+}
+.nav-folder-title[data-path^="08"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--red) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="08"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--red) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="08"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--red) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--red) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--red) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--red) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 09 Prefix -------------------------------- */
+.nav-folder-title[data-path^="09"] {
+    color: var(--red-orange);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--red-orange) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--red-orange) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--red-orange) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--red-orange) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="09"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--red-orange) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="09"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--red-orange) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="09"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--red-orange) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--red-orange) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--red-orange) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--red-orange) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 10 Prefix -------------------------------- */
+.nav-folder-title[data-path^="10"] {
+    color: var(--orange);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--orange) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--orange) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--orange) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--orange) 60%, transparent);
+}
+.nav-folder-title[data-path^="10"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--orange) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="10"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--orange) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="10"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--orange) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--orange) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--orange) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--orange) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 11 Prefix -------------------------------- */
+.nav-folder-title[data-path^="11"] {
+    color: var(--amber);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--amber) var(--fg-contrast-amount),
+                                      var (--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--amber) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--amber) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--amber) 60%, transparent);
+}
+.nav-folder-title[data-path^="11"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--amber) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="11"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--amber) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="11"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--amber) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--amber) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--amber) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--amber) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 12 Prefix -------------------------------- */
+.nav-folder-title[data-path^="12"] {
+    color: var(--yellow);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--yellow) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--yellow) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--yellow) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--yellow) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="12"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--yellow) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="12"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--yellow) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="12"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--yellow) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--yellow) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--yellow) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--yellow) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 13 Prefix -------------------------------- */
+.nav-folder-title[data-path^="13"] {
+    color: var(--lime);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--lime) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--lime) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var (--lime) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--lime) 60%, transparent);
+}
+.nav-folder-title[data-path^="13"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--lime) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="13"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--lime) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="13"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--lime) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--lime) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--lime) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--lime) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 14 Prefix -------------------------------- */
+.nav-folder-title[data-path^="14"] {
+    color: var(--mint);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--mint) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--mint) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--mint) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--mint) 60%, transparent);
+}
+.nav-folder-title[data-path^="14"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--mint) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="14"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--mint) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="14"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--mint) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--mint) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--mint) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--mint) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 15 Prefix -------------------------------- */
+.nav-folder-title[data-path^="15"] {
+    color: var(--cyan);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--cyan) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--cyan) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--cyan) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--cyan) 60%, transparent);
+}
+.nav-folder-title[data-path^="15"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--cyan) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="15"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--cyan) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="15"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--cyan) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--cyan) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--cyan) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--cyan) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 16 Prefix -------------------------------- */
+.nav-folder-title[data-path^="16"] {
+    color: var(--cool-cyan);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--cool-cyan) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--cool-cyan) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--cool-cyan) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--cool-cyan) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="16"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--cool-cyan) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="16"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--cool-cyan) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="16"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--cool-cyan) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--cool-cyan) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--cool-cyan) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--cool-cyan) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 17 Prefix -------------------------------- */
+.nav-folder-title[data-path^="17"] {
+    color: var(--light-blue);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--light-blue) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--light-blue) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--light-blue) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--light-blue) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="17"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--light-blue) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="17"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--light-blue) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="17"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--light-blue) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--light-blue) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--light-blue) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--light-blue) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 18 Prefix -------------------------------- */
+.nav-folder-title[data-path^="18"] {
+    color: var(--blue);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--blue) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--blue) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--blue) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--blue) 60%, transparent);
+}
+.nav-folder-title[data-path^="18"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--blue) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="18"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--blue) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="18"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--blue) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--blue) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--blue) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--blue) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 19 Prefix -------------------------------- */
+.nav-folder-title[data-path^="19"] {
+    color: var(--indigo);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--indigo) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--indigo) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--indigo) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--indigo) 60%,
+                                         transparent
+    );
+}
+.nav-folder-title[data-path^="19"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--indigo) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="19"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--indigo) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="19"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--indigo) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--indigo) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--indigo) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--indigo) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 20 Prefix -------------------------------- */
+.nav-folder-title[data-path^="20"] {
+    color: var(--purple);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--purple) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--purple) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--purple) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--purple) 60%, transparent);
+}
+.nav-folder-title[data-path^="20"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--purple) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="20"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--purple) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="20"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--purple) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--purple) 50%, var (--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--purple) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--purple) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 21 Prefix -------------------------------- */
+.nav-folder-title[data-path^="21"] {
+    color: var(--magenta);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--magenta) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--magenta) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--magenta) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--magenta) 60%, transparent);
+}
+.nav-folder-title[data-path^="21"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--magenta) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="21"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--magenta) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="21"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--magenta) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--magenta) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--magenta) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--magenta) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 22 Prefix -------------------------------- */
+.nav-folder-title[data-path^="22"] {
+    color: var(--red-hot);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--magenta) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--red-hot) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--magenta) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--red-hot) 60%, transparent);
+}
+.nav-folder-title[data-path^="22"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--red-hot) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="22"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--red-hot) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="22"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--red-hot) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--red-hot) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--red-hot) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--red-hot) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* ------------------------------- 23 Prefix -------------------------------- */
+.nav-folder-title[data-path^="23"] {
+    color: var(--red);
+    --nav-item-color-hover: color-mix(
+        in srgb,
+        var(--magenta) var(--fg-contrast-amount),
+                                      var(--contrast-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        var(--red) var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--magenta) 40%,
+                                                  transparent
+    );
+    --nav-collapse-icon-color: color-mix(in srgb, var(--red) 60%, transparent);
+}
+.nav-folder-title[data-path^="23"]:hover {
+    --nav-collapse-icon-color: color-mix(
+        in srgb,
+        var(--red) 60%,
+                                         var(--contrast-color)
+    );
+}
+.tree-item-children .nav-folder:has(.nav-folder-title[data-path^="23"]) {
+    --nav-indentation-guide-color: color-mix(
+        in srgb,
+        var(--red) var(--medium-contrast-amount),
+                                             transparent
+    );
+}
+.tree-item-children
+.nav-folder:has(.nav-folder-title[data-path^="23"])
+.nav-file-title {
+    color: color-mix(
+        in srgb,
+        var(--red) var(--medium-contrast-amount),
+                     var(--default-text-color)
+    );
+    --nav-item-background-hover: color-mix(
+        in srgb,
+        color-mix(in srgb, var(--red) 50%, var(--highlight))
+        var(--bg-contrast-amount),
+                                           transparent
+    );
+    --background-modifier-border-focus: color-mix(
+        in srgb,
+        var(--red) 40%,
+                                                  transparent
+    );
+    --nav-item-background-active: color-mix(
+        in srgb,
+        var(--red) var(--active-contrast-amount),
+                                            transparent
+    );
+}
+
+/* === README ===
+	Snippet: MCL Wide Views / Author: Faiz Khuzaimah / twitter: @faizkhuzaimah / github: https://github.com/efemkay
+	Version 0.6.3 (updated 2022-11-18)
+	- compatibility update to Minimal theme v6.1.9 especially multi column admonition and wide-page
+	Version 0.6.2 (updated 2022-10-22)
+	- update to support Obsidian 1.0.0
+	- Fix wide-page not renderring properly in editing view (conflict with global/vault wide settings
+	- Adjusted the variable for Adjustable RLL to make use of Obsidian default variable --file-line-width. Changes not break the settings as I mapped it to MCL own variable --adj-rll-max-width
+	- Fix for wide-table not renderring properly in editing view for Minimal theme.
+	Version 0.6.0 (updated 2022-09-25)
+	- fix to support Obsidian v0.16.x (mostly editing view and global settings)
+	- code cleanup
+
+	What is this snippet for?
+	- for any users to use with any theme to complement any missing page/block width control
+	- some features will require mgmeyer's Contextual Typography (CT) plugin
+	- available cssClass:
+		- wide-page
+		- wide-dataview (require CT plugin)
+		- wide-table (require CT plugin)
+		- wide-callout
+		- wide-backlinks
+		- narrow-page
+		- cssClass toggle: is-adj-rll and adj-rll-max-width
+
+	Credits
+	- Kevin Powell Youtube channel
+	- hydescarf for accomodating my snippets adjustment
+*/
+
+/* @settings
+
+name: Modular CSS Layout - Wide Views
+id: modular-css-layout-wv
+settings:
+
+	-
+		id: adj-rll-title
+		title: Adjustable RLL Settings
+		description: Control max-width for all page/note by default. RLL must be **enabled**
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: is-adj-rll
+		title: Enable Adjustable RLL
+		description: Add is-adj-rll class to the body element
+		type: class-toggle
+	-
+		id: adj-rll-max-width
+		title: Max Width for Normal Width page (any unit e.g. px, em, ch)
+		type: variable-text
+		default: 750px
+
+    -
+        id: wide-view-title
+        title: Wide Page/Dataview/Table/Backlinks/Callout Settings
+		description: Control max-width block for page with cssClass `wide-page`. RLL can be enabled or disabled
+        type: heading
+        level: 2
+        collapsed: true
+    -
+        id: normal-max-width
+        title: Max Width for Normal Width block (any unit e.g. px, em, ch)
+        type: variable-text
+        default: 750px
+	-
+		id: wide-dataview-global
+		title: Enable `wide-dataview` vault-wide
+		description: use `wide-dataview` in yaml to enable only for selected note/page
+		type: class-toggle
+	-
+		id: wide-table-global
+		title: Enable `wide-table` vault-wide
+		description: use `wide-table` in yaml to enable only for selected note/page
+		type: class-toggle
+	-
+		id: wide-callout-global
+		title: Enable `wide-callout` vault-wide
+		description: use `wide-callout` in yaml to enable only for selected note/page
+		type: class-toggle
+	-
+		id: wide-backlinks-global
+		title: Enable `wide-backlinks` vault-wide
+		description: use `wide-backlinks` in yaml to enable only for selected note/page
+		type: class-toggle
+
+    -
+        id: narrow-view-title
+        title: Narrow Page Settings
+		description: Control max-width page/note with cssClass `narrow-page`. RLL must be **disabled**
+        type: heading
+        level: 2
+        collapsed: true
+    -
+        id: narrow-max-width
+        title: Max Width for Narrow View page (any unit e.g. px, em, ch)
+        type: variable-text
+        default: 750px
+
+*/
+
+body{
+	--normal-max-width: var(--file-line-width);
+	--narrow-max-width: var(--file-line-width);
+	--adj-rll-max-width: 750px;
+}
+
+/* === Wide Page === */
+
+
+	/* --- Editing View ---
+		- set Readable Line Length (RLL) to wide (100%) for any css class with "wide" word in it.
+		- "width:100%" added for Blue Topaz
+		- .cm-content added to override Mado 11
+		- focus to fix for v0.16.x -- .markdown-source-view.mod-cm6 .cm-sizer
+	*/
+
+	/* - WPEV - */
+	/* Main code */
+	/* Set the containers (all relevant levels) to max-width 100%. Applicable to global and per note (cssClass) */
+	/* selector for editing container .cm-sizer */
+	:is(body[class*="wide-"], div[class*="wide-"].markdown-source-view.mod-cm6.is-readable-line-width) .cm-sizer,
+	/* selector for sub containers
+		- .cm-contentContainer, .cm-contentContainer > .cm-content, .cm-contentContainer > .cm-content > div
+		- .embedded-backlinks, .embedded-backlinks > div */
+	:is(body[class*="wide-"]:not(.max-view-enabled), div[class*="wide-"].markdown-source-view.mod-cm6) :is(.cm-contentContainer.cm-contentContainer, .cm-contentContainer.cm-contentContainer > .cm-content, .cm-contentContainer.cm-contentContainer > .cm-content > div, .embedded-backlinks, .embedded-backlinks > div)
+		{ max-width: 100%; width: 98%;}
+
+	/* Special adjustment - for Minimal
+		- it has table also set with max-width. but table require separate line because we don't want width: 100% as that would stretch the table
+		- but for callout, require width: auto */
+	div[class*="wide-"].markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .cm-content table { max-width: 100% }
+	div[class*="wide-"].markdown-source-view.mod-cm6.is-readable-line-width .cm-embed-block:is(.cm-callout, .admonition-parent) > .callout { max-width: 100%; width: auto;}
+		/* overriding margin-left setting to obsidian "default" */
+	div[class*="wide-page"].markdown-source-view.mod-cm6 .embedded-backlinks,
+	div[class*="wide-page"].markdown-source-view.mod-cm6 .cm-contentContainer > .cm-content > div
+		{margin-left: 20px !important; }
+	div[class*="wide-"].markdown-source-view.mod-cm6.is-readable-line-width .cm-embed-block:is(.cm-callout, .admonition-parent) > .callout
+		{ margin-left: 0 !important; }
+
+	div[class*="wide-page"].markdown-source-view.mod-cm6.is-readable-line-width table
+		{margin-left: unset !important; }
+
+	/* Additional Note
+		- Yin Yang uses .markdown-source-view.mod-cm6 { width: !important;}. I'm skipping fixes for this until there's user request
+		- added :is(body:not(.max-view-enabled) .mod-root) to accomodate for Shimmering Focus, does not affect other themes */
+
+
+	/* --- Reading View --- */
+	/* -- similar to Editing View (WPEV), set the RLL to 100% for any css class with "wide" word in it
+		- :is() used for OR between global toggle and "cssClass" in yaml
+		- "width:100%" added for Blue Topaz */
+
+	/* - WPRV - */
+	/* Main code */
+	/* Set the containers (all relevant levels) to max-width 100%. Applicable to global and per note (cssClass) */
+	body[class*="wide-"] :is(.markdown-preview-sizer.markdown-preview-sizer, .markdown-preview-sizer.markdown-preview-sizer > div),
+	div[class*="wide-"].markdown-preview-view :is(.markdown-preview-sizer.markdown-preview-sizer, .markdown-preview-sizer.markdown-preview-sizer > div)
+		{ max-width: 100%; margin-inline: auto; width: 100%;}
+
+	/* Special adjustment - for Minimal theme */
+	div[class*="wide-"].markdown-preview-view {padding-inline: 30px;}
+
+	/* special line just for Atom theme -- commented out for now */
+	/*
+	div[class*="wide-"].markdown-preview-view .markdown-preview-sizer.markdown-preview-sizer,
+	div[class*="wide-"].markdown-preview-view .markdown-preview-sizer.markdown-preview-sizer > div
+		{ max-width: 100% !important; } */
+
+
+/* === Wide Blocks (i.e. Dataview, Table, Callout & Backlink) === */
+
+
+	/* --- Editing View ---
+	   - For Editing View, the approach is slightly different. After "wide-page" set all max-width to 100%, I adjust the .cm-content > * blocks to normal width and then selectively target blocks for wide width
+	   - must note to ensure specificity rule over some theme), then
+	   - global settings selector need to be separated to ensure it is not conditional to cssClass yaml
+	   - `body[class*="wide-"]` used for global settings, `div[class*="wide-"].markdown-preview-view` used for per note cssClass
+	*/
+
+	/* - WBEV - */
+	/* Main code */
+	/* Generally set all blocks to normal width, no need (yet) for global settings as I didn't adjust it Wide Page above */
+	/* set .cm-sizer > .inline-title to normal width. has to be separated because i don't want margin auto */
+	:is(body[class*="wide-"]:not(.max-view-enabled) .mod-root .markdown-source-view.mod-cm6:not(.wide-page), div.markdown-source-view.mod-cm6:is(.wide-dataview,.wide-table,.wide-backlinks,.wide-callout)) .cm-sizer > .inline-title
+		{ max-width: var(--normal-max-width); width: 100%; margin-inline: auto; }
+	/* set normal width to `.cm-content > div` and `.embedded-links` only (override the WPEV) */
+	:is(body[class*="wide-"]:not(.max-view-enabled) .markdown-source-view.mod-cm6:not(.wide-page), div[class*="wide-"].markdown-source-view.mod-cm6:not(.wide-page)) :is(.cm-contentContainer.cm-contentContainer > .cm-content > div, .cm-sizer > .embedded-backlinks)
+		{ max-width: var(--normal-max-width); margin-inline: auto !important; } /* important for margin needed because app.css:1473 use it for .cm-contentContainer > .cm-content > * */
+
+	/* selectors to set dataview, table, callout and/or backlinks to wide */
+	:is(body.wide-dataview-global:not(.max-view-enabled) .mod-root .markdown-source-view.mod-cm6, div[class*="-dataview"].markdown-source-view.mod-cm6) .cm-contentContainer.cm-contentContainer > div > div:is(.cm-preview-code-block),
+	:is(body.wide-table-global:not(.max-view-enabled) .mod-root .markdown-source-view.mod-cm6, div[class*="-table"].markdown-source-view.mod-cm6) .cm-contentContainer.cm-contentContainer > div > div:is(.HyperMD-table-row, .cm-table-widget),
+	:is(body.wide-callout-global:not(.max-view-enabled) .mod-root .markdown-source-view.mod-cm6, div[class*="-callout"].markdown-source-view.mod-cm6) .cm-contentContainer.cm-contentContainer > div > div:is(.cm-callout),
+	/* selectors to set backlinks to wide -- not fix yet for 0.16.x */
+	:is(body.wide-backlinks-global:not(.max-view-enabled) .mod-root .markdown-source-view.mod-cm6, div[class*="-backlinks"].markdown-source-view.mod-cm6) .cm-sizer > div:is(.embedded-backlinks)
+		{ max-width: 100%; }
+
+
+	/* Special adjustment - for Minimal */
+	:is(body:not(.max-view-enabled) .mod-root) div[class*="-dataview"].markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > div > div:is(.cm-preview-code-block) > div
+		{ width: unset;}
+	/* Special adjustment - for Minimal - to override custom margin-left that uses !important */
+	.wide-table.markdown-source-view.mod-cm6.is-readable-line-width table {margin-left: auto !important; }
+
+	/* Additional Notes
+		- Minimal removes inline padding for .markdown-source-view.mod-cm6 .cm-scroller so it is flushed to the very edges (no way to adjust currently)
+		- added :is(body:not(.max-view-enabled) .mod-root) to accomodate for Shimmering Focus, does not affect other themes */
+
+
+	/* --- Reading View ---
+		- Similar to WBEV, the approach is to leverage on WPRV setting all blocks to wide, set `.markdown-preview-sizer > div` to normal and set related block to wide again
+		- For Reading View, wide-dataview and wide-table will require Contextual Typography plugin
+		- :is() used to couple global toggle with yaml cssClass
+		- wide backlinks still cannot be implemented in 0.16.x as the it is located one div deeper than `.markdown-preview-sizer > div` which means I need to do "look-back", achievable only with :has()
+	*/
+
+	/* - WBRV - */
+	/* Main code */
+	/* set the containers to normal width */
+	:is(body[class*="wide-"] .markdown-preview-view:not(.wide-page), div[class*="wide-"].markdown-preview-view:not(.wide-page)) .markdown-preview-sizer.markdown-preview-sizer > div
+		{ max-width: var(--normal-max-width); margin-inline: auto; } /* important is for Atom theme */
+	/* set the related blocks to wide width */
+	:is(body.wide-dataview-global, div[class*="-dataview"].markdown-preview-view) .markdown-preview-sizer.markdown-preview-sizer > div:is(.el-lang-dataview),
+	:is(body.wide-table-global, div[class*="-table"].markdown-preview-view) .markdown-preview-sizer.markdown-preview-sizer > div:is(.el-table),
+	:is(body.wide-callout-global, div[class*="-callout"].markdown-preview-view) .markdown-preview-sizer.markdown-preview-sizer > div[data-callout],
+	/* comment out wide backlinks as no possible fix (yet) for 0.16.x due to notes above *//*
+	:is(body.wide-backlinks-global, div[class*="-backlinks"].markdown-preview-view) .markdown-preview-sizer.markdown-preview-sizer > div:is(.embedded-backlinks)
+		{ max-width: 100%; }
+	*/
+
+	/* Special adjustment - for Minimal - it also somehow set the table width within dataview block */
+	:is(body.wide-dataview-global, div[class*="-dataview"].markdown-preview-view) .markdown-preview-sizer.markdown-preview-sizer > div:is(.el-lang-dataview) table
+		{ max-width: 100%; }
+	/* Special adjustment - for Minimal - to override Minimal custom width */
+	body[class*="global"].contextual-typography .markdown-preview-view.is-readable-line-width .markdown-preview-sizer > div { width: 100%; }
+
+	/* Additional Notes
+		- .markdown-preview-section is same div as .markdown-preview-sizer
+		- Atom uses !important for .markdown-preview-view.is-readable-line-width .markdown-preview-section {...}
+			- cannot adjust this at the moment without disrupting other theme's layout */
+
+
+	/* Editing and Reading View -- Special Adjustment
+		- for table for all theme, since its table not auto margin */
+	:is(body.wide-table-global, div[class*="wide-table"]) table { margin-inline: auto; }
+
+
+/* === Narrow Page === */
+/* cssClass YAML to allow users with disabled RLL to introduce RLL per page/note basis */
+
+
+	/* --- Editing View ---
+		- Set Readable Line Length (RLL) to wide (100%) for any css class with "wide" word in it
+	*/
+
+	/* - NPEV - */
+	/* Main code */
+	/* set the containers to narrow width. `div.cm-content` added to override Mado 11 */
+ 	div[class*="narrow-"].markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer,
+ 	div[class*="narrow-"].markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .cm-content,
+ 	div[class*="narrow-"].markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .cm-content > div,
+ 	div[class*="narrow-"].markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .embedded-backlinks,
+ 	div[class*="narrow-"].markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .embedded-backlinks > div
+ 		{ max-width: var(--narrow-max-width); margin-inline: auto; }
+
+	/* Special adjustment - for Minimal */
+	/* it has table also set with max-width. but table require separate line because we don't want margin: auto that would center the table relative to other elements like para */
+	div[class*="narrow-"].markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .cm-content table
+		{ max-width: var(--narrow-max-width); }
+ 	/* for Minimal theme but affecting all theme. Minimal apparently uses !important to control margin the adjustment is still safe because for narrow-page you would want margin: auto anyway */
+	div[class*="narrow-"].markdown-source-view.mod-cm6:not(.is-readable-line-width) .cm-contentContainer
+		{ margin-inline: auto !important; }
+
+
+	/* --- Reading View ---
+		- Similar to Editing View, set the RLL to 100% for any css class with "wide" word in it.
+	*/
+
+	/* - NPRV - */
+	/* Main code */
+ 	/* set the note with cssClass: narrow- to max-width of the narrow width */
+ 	div[class*="narrow-"].markdown-preview-view .markdown-preview-sizer.markdown-preview-sizer, /* double-up for specificity */
+ 	div[class*="narrow-"].markdown-preview-view .markdown-preview-sizer.markdown-preview-sizer > div
+ 		{ max-width: var(--narrow-max-width); margin-inline: auto;}
+
+ 	/* Special adjustment - for Minimal theme */
+ 	div[class*="narrow-"].markdown-preview-view {padding-inline: 30px;}
+
+
+/* === Adjustable RLL === */
+/* cssClass toggle to allow users to adjust the RLL via Style Settings */
+/* Obsidian v1.0.0 makes it easier to do adjustable RLL -- just single line css ;) */
+
+	/* --- Editing and Reading View --- */
+	/* - AREV and ARRV - */
+	body.is-adj-rll { --file-line-width: var(--adj-rll-max-width); }
+
+	/* I still save below snippet for future references. May delete later */
+
+		/* --- Editing View ---
+			- Set Readable Line Length (RLL) to wide (100%) for any css class with "wide" word in it.
+		*/
+
+		/* - AREV - */
+		/* Main code */
+		/* set the containers to the custom adj rll width. `div.cm-content` added to override Mado 11 *//*
+	    .is-adj-rll .markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer,
+		.is-adj-rll .markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .cm-content,
+		.is-adj-rll .markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .cm-content table, /* for minimal *//*
+		.is-adj-rll .markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .cm-content > div,
+		.is-adj-rll .markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .embedded-backlinks,
+		.is-adj-rll .markdown-source-view.mod-cm6 .cm-contentContainer.cm-contentContainer > .embedded-backlinks > div
+			{ max-width: var(--adj-rll-max-width); margin-inline: auto; }
+
+		/* --- Reading View ---
+			- Similar to Editing View, set the RLL to 100% for any css class with "wide" word in it
+		*/
+
+		/* - ARRV - */
+		/* Main code */
+		/* set the containers to the custom adj rll width *//*
+		.is-adj-rll .markdown-preview-view .markdown-preview-sizer.markdown-preview-sizer, /* double-up for specificity *//*
+		.is-adj-rll .markdown-preview-view .markdown-preview-sizer.markdown-preview-sizer > div
+			{ max-width: var(--adj-rll-max-width); margin-inline: auto;}
+
+.callout::after {
+    content: "";
+    width: 48px;
+    height: 15px;
+    border-radius: 8px;
+    position: absolute;
+    display: inline-block;
+    background: rgb(var(--callout-color));
+    margin-top: 0.3%;
+    margin-left: auto;
+    border: var(--border-lowOp);
+    box-shadow: var(--sbs);
+}
+
+.callout {
+    background: transparent;
+}
+
+body {
+    --callout-border-width: 2px;
+    --callout-border-opacity: 1;
+}
+
+/* MIT License | Copyright (c) Stephan Ango (@kepano) 
+Cards snippet for Obsidian
+author: @kepano
+version: 2.0.0
+Support my work:
+https://github.com/sponsors/kepano
+*/
+:root {
+  --cards-min-width: 180px;
+  --cards-max-width: 1fr;
+  --cards-mobile-width: 120px;
+  --cards-image-height: 400px;
+  --cards-padding: 1.2em;
+  --cards-image-fit: contain;
+  --cards-background: transparent;
+  --cards-border-width: 1px;
+  --cards-aspect-ratio: auto;
+  --cards-columns: repeat(auto-fit, minmax(var(--cards-min-width), var(--cards-max-width))); }
+
+@media (max-width: 400pt) {
+  :root {
+    --cards-min-width:var(--cards-mobile-width); } }
+.cards.table-100 table.dataview tbody,
+.table-100 .cards table.dataview tbody {
+  padding: 0.25rem 0.75rem; }
+
+.cards table.dataview tbody {
+  clear: both;
+  padding: 0.5rem 0;
+  display: grid;
+  grid-template-columns: var(--cards-columns);
+  grid-column-gap: 0.75rem;
+  grid-row-gap: 0.75rem; }
+.cards table.dataview > tbody > tr {
+  background-color: var(--cards-background);
+  border: var(--cards-border-width) solid var(--background-modifier-border);
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 0 calc(var(--cards-padding)/3) 0;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: box-shadow 0.15s linear;
+  max-width: var(--cards-max-width); }
+.cards table.dataview > tbody > tr:hover {
+  border: var(--cards-border-width) solid var(--background-modifier-border-hover);
+  box-shadow: 0 4px 6px 0px rgba(0, 0, 0, 0.05), 0 1px 3px 1px rgba(0, 0, 0, 0.025);
+  transition: box-shadow 0.15s linear; }
+.cards table.dataview tbody > tr > td {
+  /* Paragraphs */
+  /* Links */
+  /* Buttons */
+  /* Lists */
+  /* Images */ }
+  .cards table.dataview tbody > tr > td:first-child {
+    font-weight: var(--bold-weight); }
+  .cards table.dataview tbody > tr > td:first-child a {
+    padding: 0 0 calc(var(--cards-padding)/3);
+    display: block; }
+  .cards table.dataview tbody > tr > td:not(:first-child) {
+    font-size: 90%;
+    color: var(--text-muted); }
+  .cards table.dataview tbody > tr > td .el-p {
+    display: block;
+    width: 100%; }
+  .cards table.dataview tbody > tr > td > *:not(.el-embed-image) {
+    padding: calc(var(--cards-padding)/3) 0; }
+  .cards table.dataview tbody > tr > td:not(:last-child):not(:first-child) > .el-p:not(.el-embed-image) {
+    border-bottom: 1px solid var(--background-modifier-border);
+    width: 100%; }
+  .cards table.dataview tbody > tr > td a {
+    text-decoration: none; }
+  .cards table.dataview tbody > tr > td > button {
+    width: 100%;
+    margin: calc(var(--cards-padding)/2) 0; }
+  .cards table.dataview tbody > tr > td:last-child > button {
+    margin-bottom: calc(var(--cards-padding)/6); }
+  .cards table.dataview tbody > tr > td > ul {
+    width: 100%;
+    padding: 0.25em 0 !important;
+    margin: 0 auto !important; }
+  .cards table.dataview tbody > tr > td:not(:last-child) > ul {
+    border-bottom: 1px solid var(--background-modifier-border); }
+  .cards table.dataview tbody > tr > td .el-embed-image {
+    background-color: var(--background-secondary);
+    display: block;
+    margin: 0 calc(var(--cards-padding)/-2) 0 calc(var(--cards-padding)/-2);
+    width: calc(100% + var(--cards-padding)); }
+  .cards table.dataview tbody > tr > td img {
+    aspect-ratio: var(--cards-aspect-ratio);
+    width: 100%;
+    object-fit: var(--cards-image-fit);
+    max-height: var(--cards-image-height);
+    background-color: var(--background-secondary);
+    vertical-align: bottom; }
+
+.markdown-source-view.mod-cm6.cards .dataview.table-view-table > tbody > tr > td,
+.trim-cols .cards table.dataview tbody > tr > td {
+  white-space: normal; }
+
+.cards .dataview.table-view-table > tbody > tr > td,
+.cards table.dataview tbody > tr > td,
+.markdown-source-view.mod-cm6.cards .dataview.table-view-table > tbody > tr > td,
+.markdown-source-view.mod-cm6.cards table.dataview tbody > tr > td {
+  border-bottom: none;
+  padding: 0 !important;
+  line-height: 1.2;
+  width: calc(100% - var(--cards-padding));
+  margin: 0 auto;
+  overflow: visible !important;
+  max-width: 100%;
+  display: flex; }
+
+.links-int-on .cards table.dataview tbody > tr > td a {
+  text-decoration: none; }
+
+
+/* Block button */
+.markdown-source-view.mod-cm6.cards .edit-block-button {
+  top: 0px; }
+
+/* ------------------- */
+/* Sorting menu */
+.cards.table-100 table.dataview thead > tr,
+.table-100 .cards table.dataview thead > tr {
+  right: 0.75rem; }
+
+.table-100 .cards table.dataview thead:before,
+.cards.table-100 table.dataview thead:before {
+  margin-right: 0.75rem; }
+
+.theme-light .cards table.dataview thead:before {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100"><path fill="black" d="M49.792 33.125l-5.892 5.892L33.333 28.45V83.333H25V28.45L14.438 39.017L8.542 33.125L29.167 12.5l20.625 20.625zm41.667 33.75L70.833 87.5l-20.625 -20.625l5.892 -5.892l10.571 10.567L66.667 16.667h8.333v54.883l10.567 -10.567l5.892 5.892z"></path></svg>'); }
+
+.cards .el-pre + .el-lang-dataview .table-view-thead {
+  padding-top: 8px; }
+.cards table.dataview thead {
+  user-select: none;
+  width: 180px;
+  display: block;
+  float: right;
+  position: relative;
+  text-align: right;
+  height: 24px;
+  padding-bottom: 4px; }
+.cards table.dataview thead:hover:before {
+  opacity: 0.5;
+  background-color: var(--background-modifier-hover); }
+.cards table.dataview thead:before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 10px;
+  height: 16px;
+  background-repeat: no-repeat;
+  cursor: var(--cursor);
+  text-align: right;
+  padding: var(--size-4-1) var(--size-4-2);
+  margin-bottom: 2px;
+  border-radius: var(--radius-s);
+  font-weight: 500;
+  font-size: var(--font-adaptive-small);
+  opacity: 0.25;
+  background-position: center center;
+  background-size: 16px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100"><path fill="white" d="M49.792 33.125l-5.892 5.892L33.333 28.45V83.333H25V28.45L14.438 39.017L8.542 33.125L29.167 12.5l20.625 20.625zm41.667 33.75L70.833 87.5l-20.625 -20.625l5.892 -5.892l10.571 10.567L66.667 16.667h8.333v54.883l10.567 -10.567l5.892 5.892z"></path></svg>'); }
+.cards table.dataview thead > tr {
+  top: -1px;
+  position: absolute;
+  display: none;
+  z-index: 9;
+  border: 1px solid var(--background-modifier-border-hover);
+  background-color: var(--background-secondary);
+  box-shadow: var(--shadow-s);
+  padding: 6px;
+  border-radius: var(--radius-m);
+  flex-direction: column;
+  margin: 26px 0 0 0;
+  width: 100%; }
+.cards table.dataview thead:hover > tr {
+  display: flex; }
+.cards table.dataview thead > tr > th {
+  display: block;
+  padding: 3px 30px 3px 6px !important;
+  border-radius: var(--radius-s);
+  width: 100%;
+  font-weight: 400;
+  color: var(--text-normal);
+  cursor: var(--cursor);
+  border: none;
+  font-size: var(--font-ui-small); }
+.cards table.dataview thead > tr > th[sortable-style="sortable-asc"],
+.cards table.dataview thead > tr > th[sortable-style="sortable-desc"] {
+  color: var(--text-normal); }
+.cards table.dataview thead > tr > th:hover {
+  color: var(--text-normal);
+  background-color: var(--background-modifier-hover); }
+
+/* ------------------- */
+/* Helper classes */
+.cards.cards-16-9 {
+  --cards-aspect-ratio: 16/9; }
+.cards.cards-1-1 {
+  --cards-aspect-ratio: 1/1; }
+.cards.cards-2-1 {
+  --cards-aspect-ratio: 2/1; }
+.cards.cards-2-3 {
+  --cards-aspect-ratio: 2/3; }
+.cards.cards-cols-1 {
+  --cards-columns: repeat(1, minmax(0, 1fr)); }
+.cards.cards-cols-2 {
+  --cards-columns: repeat(2, minmax(0, 1fr)); }
+.cards.cards-cover table.dataview tbody > tr > td img {
+  object-fit: cover; }
+.cards.cards-align-bottom table.dataview tbody > tr > td:last-child {
+  align-items: flex-end;
+  flex-grow: 1; }
+
+@media (max-width: 400pt) {
+  .cards table.dataview tbody > tr > td:not(:first-child) {
+    font-size: 80%; } }
+@media (min-width: 400pt) {
+  .cards-cols-3 {
+    --cards-columns: repeat(3, minmax(0, 1fr)); }
+
+  .cards-cols-4 {
+    --cards-columns: repeat(4, minmax(0, 1fr)); }
+
+  .cards-cols-5 {
+    --cards-columns: repeat(5, minmax(0, 1fr)); }
+
+  .cards-cols-6 {
+    --cards-columns: repeat(6, minmax(0, 1fr)); }
+
+  .cards-cols-7 {
+    --cards-columns: repeat(7, minmax(0, 1fr)); }
+
+  .cards-cols-8 {
+    --cards-columns: repeat(8, minmax(0, 1fr)); } }
+
+/* Table helper classes for alternate styles */
+/* MIT License | Copyright (c) Stephan Ango (@kepano) */
+.table-small table:not(.calendar) {
+  --table-text-size: 85%; }
+
+.table-tiny table:not(.calendar) {
+  --table-text-size: 75%; }
+
+.row-hover th:first-child,
+.row-hover th:first-child,
+.row-alt.markdown-source-view.mod-cm6 th:first-child,
+.row-alt.markdown-source-view.mod-cm6 td:first-child,
+.row-alt table:not(.calendar) th:first-child,
+.row-alt table:not(.calendar) tbody > tr > td:first-child,
+.table-lines.markdown-source-view.mod-cm6 th:first-child,
+.table-lines.markdown-source-view.mod-cm6 td:first-child,
+.table-lines table:not(.calendar) thead > tr > th:first-child,
+.table-lines table:not(.calendar) tbody > tr > td:first-child {
+  padding-left: 10px; }
+
+.row-alt {
+  --table-row-alt-background: var(--background-table-rows); }
+
+.col-alt {
+  --table-column-alt-background: var(--background-table-rows); }
+
+.table-tabular table:not(.calendar) {
+  font-variant-numeric: tabular-nums; }
+
+.table-lines {
+  --table-border-width: 1px;
+  --table-header-border-width: 1px;
+  --table-column-first-border-width: 1px;
+  --table-column-last-border-width: 1px;
+  --table-row-last-border-width: 1px; }
+
+.table-nowrap {
+  --table-white-space: nowrap; }
+
+.trim-cols,
+.table-nowrap .table-wrap {
+  --table-white-space: normal; }
+
+.table-numbers table:not(.calendar) {
+  counter-reset: section; }
+  .table-numbers table:not(.calendar) > thead > tr > th:first-child::before {
+    content: " ";
+    padding-right: 0.5em;
+    display: inline-block;
+    min-width: 2em; }
+  .table-numbers table:not(.calendar) > tbody > tr > td:first-child::before {
+    counter-increment: section;
+    content: counter(section) " ";
+    text-align: center;
+    padding-right: 0.5em;
+    display: inline-block;
+    min-width: 2em;
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums; }
+
+.row-lines table:not(.calendar) tbody > tr > td,
+.row-lines .table-view-table > tbody > tr > td {
+  border-bottom: 1px solid var(--background-modifier-border); }
+.row-lines table:not(.calendar) tbody > tr:last-child > td {
+  border-bottom: none; }
+
+.col-lines table:not(.calendar) tbody > tr > td:not(:last-child),
+.col-lines .table-view-table thead > tr > th:not(:last-child),
+.col-lines .table-view-table > tbody > tr > td:not(:last-child) {
+  border-right: 1px solid var(--background-modifier-border); }
+
+/* Image zoom  */
+/* MIT License | Copyright (c) Stephan Ango (@kepano) */
+body:not(.zoom-off) .view-content div:not(.canvas-node-content) img {
+  max-width: 100%;
+  cursor: zoom-in; }
+body:not(.zoom-off) .view-content img:active {
+  cursor: zoom-out; }
+body:not(.zoom-off) .view-content .markdown-preview-view img[referrerpolicy='no-referrer']:active {
+  background-color: var(--background-primary);
+  padding: 10px; }
+body:not(.zoom-off) .view-content .markdown-preview-view img[referrerpolicy='no-referrer']:active,
+body:not(.zoom-off) .view-content .image-embed:not(.canvas-node-content):active {
+  aspect-ratio: unset;
+  cursor: zoom-out;
+  display: block;
+  z-index: 200;
+  position: fixed;
+  max-height: calc(100% + 1px);
+  max-width: 100%;
+  height: calc(100% + 1px);
+  width: 100%;
+  object-fit: contain;
+  margin: -0.5px auto 0 !important;
+  text-align: center;
+  padding: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+body:not(.zoom-off) .view-content .image-embed:not(.canvas-node-content):active:after {
+  background-color: var(--background-primary);
+  opacity: 0.9;
+  content: " ";
+  height: calc(100% + 1px);
+  width: 100%;
+  position: fixed;
+  left: 0;
+  right: 1px;
+  z-index: 0; }
+body:not(.zoom-off) .view-content .image-embed:not(.canvas-node-content):active img {
+  aspect-ratio: unset;
+  top: 50%;
+  z-index: 99;
+  transform: translateY(-50%);
+  padding: 0;
+  margin: 0 auto;
+  width: calc(100% - 20px);
+  max-height: 95vh;
+  object-fit: contain;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  opacity: 1; }
+
+/* Dataview and tables */
+.table-100 .el-table table,
+.table-100 .el-lang-dataview .dataview.table-view-table,
+.table-100 .el-lang-dataviewjs .dataview.table-view-table,
+.markdown-preview-view.table-100.is-readable-line-width .el-table table,
+.markdown-preview-view.table-100.is-readable-line-width .el-lang-dataview .dataview.table-view-table,
+.markdown-preview-view.table-100.is-readable-line-width .el-lang-dataviewjs .dataview.table-view-table {
+  max-width: 100% !important;
+  width: 100% !important; }
+
+.table-max .el-table table,
+.table-max .el-lang-dataview .dataview.table-view-table,
+.table-max .el-lang-dataviewjs .dataview.table-view-table,
+.markdown-preview-view.table-max .el-table table,
+.markdown-preview-view.table-max .el-lang-dataview .dataview.table-view-table,
+.markdown-preview-view.table-max .el-lang-dataviewjs .dataview.table-view-table {
+  max-width: 100% !important; }
+
+.table-wide .markdown-preview-view.is-readable-line-width .el-table table,
+.table-wide .markdown-preview-view.is-readable-line-width .el-lang-dataview .dataview.table-view-table,
+.table-wide .markdown-preview-view.is-readable-line-width .el-lang-dataviewjs .dataview.table-view-table,
+.markdown-preview-view.is-readable-line-width.table-wide .el-table table,
+.markdown-preview-view.is-readable-line-width.table-wide .el-lang-dataview .dataview.table-view-table,
+.markdown-preview-view.is-readable-line-width.table-wide .el-lang-dataviewjs .dataview.table-view-table {
+  max-width: var(--line-width-wide) !important; }
+
+.table-100 table th:first-child,
+.table-100 table td:first-child,
+.table-100 .dataview.table-view-table th:first-child,
+.table-100 .dataview.table-view-table td:first-child,
+.table-100 .markdown-source-view.mod-cm6 td:first-child,
+.table-100 .markdown-source-view.mod-cm6 th:first-child {
+  padding-left: 20px !important; }
+.table-100 table th:last-child,
+.table-100 table td:last-child,
+.table-100 .dataview.table-view-table th:last-child,
+.table-100 .dataview.table-view-table td:last-child {
+  padding-right: 20px; }
+
+/* Live Preview */
+.chart-max.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-chart,
+.chart-max .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-chart,
+.map-max.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-leaflet,
+.map-max .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-leaflet,
+.table-max.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-table-widget > table,
+.table-max .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-table-widget > table,
+.table-max.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataview,
+.table-max .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataview,
+.table-max.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataviewjs,
+.table-max .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataviewjs,
+.table-max.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block.cm-table-widget > div:not(.edit-block-button),
+.table-max .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block.cm-table-widget > div:not(.edit-block-button),
+.img-max.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > .image-embed,
+.img-max .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > .image-embed,
+.img-max.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > img,
+.img-max .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > img {
+  width: var(--max-width) !important;
+  max-width: var(--max-width) !important;
+  transform: none !important;
+  padding-left: 0;
+  margin: 0 auto !important; }
+
+.chart-wide.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-chart,
+.chart-wide .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-chart,
+.map-wide.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-leaflet,
+.map-wide .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-leaflet,
+.table-wide.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-table-widget > table,
+.table-wide .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-table-widget > table,
+.table-wide.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataview,
+.table-wide .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataview,
+.table-wide.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataviewjs,
+.table-wide .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataviewjs,
+.table-wide.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block.cm-table-widget > div:not(.edit-block-button),
+.table-wide .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block.cm-table-widget > div:not(.edit-block-button),
+.img-wide.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > .image-embed,
+.img-wide .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > .image-embed,
+.img-wide.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > img,
+.img-wide .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > img {
+  width: var(--line-width-wide) !important;
+  max-width: var(--max-width);
+  transform: none !important;
+  padding-left: 0;
+  margin: 0 auto !important; }
+
+.chart-100.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-chart,
+.chart-100 .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-chart,
+.map-100.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-leaflet,
+.map-100 .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .block-language-leaflet,
+.table-100.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width table,
+.table-100 .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width table,
+.table-100.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataview,
+.table-100 .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataview,
+.table-100.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataviewjs,
+.table-100 .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block > .block-language-dataviewjs,
+.table-100.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block.cm-table-widget > div:not(.edit-block-button),
+.table-100 .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-embed-block.cm-table-widget > div:not(.edit-block-button),
+.img-100.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > .image-embed,
+.img-100 .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > .image-embed,
+.img-100.markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > img,
+.img-100 .markdown-source-view.mod-cm6.is-live-preview.is-readable-line-width .cm-content > img {
+  width: 100% !important;
+  max-width: 100% !important;
+  transform: none !important;
+  margin: 0 auto !important;
+  padding-left: 0; }
+
+/* Custom line width with folding offset */
+@media (max-width: 400pt) {
+  .is-mobile {
+    --folding-offset:0px; } }
+.markdown-source-view.wide,
+.markdown-preview-view.wide {
+  --line-width-adaptive:var(--line-width-wide); }
+
+.markdown-source-view.max,
+.markdown-preview-view.max {
+  --line-width-adaptive:300em;
+  --line-width-wide:300em; }
+
+/* With readable line width */
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
+  max-width: var(--max-width);
+  width: var(--line-width-adaptive);
+  padding-left: 0; }
+
+.markdown-source-view.is-readable-line-width .CodeMirror {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0 auto 0 auto;
+  width: var(--line-width-adaptive);
+  max-width: var(--max-width); }
+
+/* Readable line width off */
+.markdown-reading-view .markdown-preview-view:not(.is-readable-line-width) > .markdown-preview-sizer {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--folding-offset); }
+
+.is-mobile .markdown-source-view.mod-cm6 .cm-gutters {
+  padding-right: 0; }
+
+/* Requires Minimal plugin 5.2.1+ */
+.minimal-readable-off .view-header-title-container {
+  width: var(--max-width); }
+
+/* Max width for readable-line length off */
+.markdown-source-view.mod-cm6:not(.is-readable-line-width) .inline-title,
+.markdown-source-view.mod-cm6:not(.is-readable-line-width) .cm-contentContainer {
+  max-width: var(--max-width);
+  margin: 0 0 0 calc(50% - var(--max-width)/2) !important;
+  padding-left: var(--folding-offset); }
+
+.markdown-source-view.mod-cm6 .cm-content > .cm-embed-block[contenteditable=false] {
+  overflow-x: auto; }
+
+
+/* Dataview plugin */
+body .table-view-table > thead > tr > th,
+.markdown-preview-view .table-view-table > thead > tr > th {
+  font-weight: 400;
+  font-size: var(--table-text-size);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--background-modifier-border);
+  cursor: var(--cursor); }
+
+table.dataview ul.dataview-ul {
+  list-style: none;
+  padding-inline-start: 0;
+  margin-block-start: 0em !important;
+  margin-block-end: 0em !important; }
+
+.markdown-source-view.mod-cm6 .table-view-table > tbody > tr > td,
+.markdown-preview-view .table-view-table > tbody > tr > td {
+  max-width: var(--max-col-width); }
+
+body .dataview.small-text {
+  color: var(--text-faint); }
+
+/* Style Settings preferences */
+.style-settings-container[data-level="2"] {
+  background: var(--background-secondary);
+  border: 1px solid var(--ui1);
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 2px 0 2px -20px; }
+
+.workspace-leaf-content[data-type="style-settings"] .view-content {
+  padding: var(--size-4-4) 0 var(--size-4-4) var(--folding-offset); }
+.workspace-leaf-content[data-type="style-settings"] .view-content > div {
+  width: var(--line-width-adaptive);
+  max-width: var(--max-width);
+  margin: 0 auto; }
+.workspace-leaf-content[data-type="style-settings"] .style-settings-heading[data-level="0"] .setting-item-name {
+  padding-left: 17px; }
+.workspace-leaf-content[data-type="style-settings"] .setting-item {
+  max-width: 100%;
+  margin: 0 auto; }
+.workspace-leaf-content[data-type="style-settings"] .setting-item-name {
+  position: relative; }
+.workspace-leaf-content[data-type="style-settings"] .style-settings-collapse-indicator {
+  position: absolute;
+  left: 0; }
+
+.setting-item-heading.style-settings-heading,
+.style-settings-container .style-settings-heading {
+  cursor: var(--cursor); }
+
+.modal.mod-settings .setting-item .pickr button.pcr-button {
+  box-shadow: none;
+  border-radius: 40px;
+  height: 24px;
+  width: 24px; }
+
+.setting-item .pickr .pcr-button:after,
+.setting-item .pickr .pcr-button:before {
+  border-radius: 40px;
+  box-shadow: none;
+  border: none; }
+
+.setting-item.setting-item-heading.style-settings-heading.is-collapsed {
+  border-bottom: 1px solid var(--background-modifier-border); }
+
+.setting-item.setting-item-heading.style-settings-heading {
+  border: 0;
+  padding: 10px 0 5px;
+  margin-bottom: 0; }
+
+.mod-root .workspace-leaf-content[data-type="style-settings"] .style-settings-container .setting-item:not(.setting-item-heading) {
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5em 0; }
+
+.workspace-split:not(.mod-root) .workspace-leaf-content[data-type="style-settings"] .setting-item-name {
+  font-size: var(--font-adaptive-smaller); }
+
+.setting-item .style-settings-import,
+.setting-item .style-settings-export {
+  text-decoration: none;
+  font-size: var(--font-ui-small);
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0;
+  padding: 2px 8px;
+  border-radius: 5px;
+  cursor: var(--cursor); }
+
+.style-settings-import:hover,
+.style-settings-export:hover {
+  background-color: var(--background-modifier-hover);
+  color: var(--text-normal);
+  cursor: var(--cursor); }
+
+.themed-color-wrapper > div + div {
+  margin-top: 0;
+  margin-left: 6px; }
+
+.theme-light .themed-color-wrapper > .theme-light {
+  background-color: transparent; }
+
+.theme-light .themed-color-wrapper > .theme-dark {
+  background-color: rgba(0, 0, 0, 0.8); }
+
+.theme-dark .themed-color-wrapper > .theme-dark {
+  background-color: transparent; }
+
+/* Remove hover effect */
+body:not(.row-hover) .dataview.task-list-item:hover,
+body:not(.row-hover) .dataview.task-list-basic-item:hover,
+body:not(.row-hover) .table-view-table > tbody > tr:hover {
+  background-color: transparent !important;
+  box-shadow: none; }
+
+
+/* @settings
+name: Minimal
+id: minimal-style
+settings:
+	-
+		id: instructions
+		title: Welcome 👋
+		type: heading
+		level: 2
+		collapsed: true
+		description: Use the Minimal Theme Settings plugin to access hotkeys, adjust features, select fonts, and choose from preset color schemes. Use the settings below for more granular customization. Visit minimal.guide for documentation.
+	-
+		id: interface
+		title: Interface colors
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: base
+		title: Base color
+		description: Defines all background and border colors unless overridden in more granular settings
+		type: variable-themed-color
+		format: hsl-split
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: bg1
+		title: Primary background
+		description: Background color for the main window
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: bg2
+		title: Secondary background
+		description: Background color for left sidebar and menus
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: bg3
+		title: Active background
+		description: Background color for hovered buttons and currently selected file
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: ui1
+		title: Border color
+		type: variable-themed-color
+		description: For buttons, divider lines, and outlined elements
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: ui2
+		title: Highlighted border color
+		description: Used when hovering over buttons, dividers, and outlined elements
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: ui3
+		title: Active border color
+		description: Used when clicking buttons and outlined elements
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: accent-color
+		title: Accent color
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: ax1
+		title: Accent color
+		type: variable-themed-color
+		description: Used primarily for links
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: ax2
+		title: Accent color (hover)
+		type: variable-themed-color
+		description: Used primarily for hovered links
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: ax3
+		title: Accent color interactive
+		type: variable-themed-color
+		description: Used for buttons, checklists, toggles
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: sp1
+		title: Text on accent
+		type: variable-themed-color
+		description: Used primarily for text on accented buttons
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: extended-palette
+		title: Extended colors
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: color-red
+		title: Red
+		description: Extended palette colors are defaults used for progress bar status, syntax highlighting, colorful headings, and graph nodes
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: color-orange
+		title: Orange
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: color-yellow
+		title: Yellow
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: color-green
+		title: Green
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: color-cyan
+		title: Cyan
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: color-blue
+		title: Blue
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: color-purple
+		title: Purple
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: color-pink
+		title: Pink
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: active-line
+		title: Active line
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: active-line-on
+		title: Highlight active line
+		description: Adds a background to current line in editor
+		type: class-toggle
+		default: false
+	-
+		id: active-line-bg
+		title: Active line background
+		description: Using a low opacity color is recommended to avoid conflicting with highlights
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: blockquotes
+		title: Blockquotes
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: blockquote-color
+		title: Blockquote text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: blockquote-background-color
+		title: Blockquote background color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: blockquote-border-color
+		title: Blockquote border color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: blockquote-border-thickness
+		title: Blockquote border thickness
+		type: variable-number-slider
+		format: px
+		default: 1
+		min: 0
+		max: 5
+		step: 1
+	-
+		id: blockquote-size
+		title: Blockquote font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: ''
+	-
+		id: blockquote-font-style
+		title: Blockquote font style
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Italic
+				value: italic
+	-
+		id: callouts
+		title: Callouts
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: callouts-style
+		title: Callout style
+		type: class-select
+		allowEmpty: false
+		default: callouts-default
+		options:
+			-
+				label: Filled
+				value: callouts-default
+			-
+				label: Outlined
+				value: callouts-outlined
+	-
+		id: callout-blend-mode
+		title: Color blending
+		description: Blend the color of nested callouts
+		type: variable-select
+		allowEmpty: false
+		default: var(--highlight-mix-blend-mode)
+		options:
+			-
+				label: On
+				value: var(--highlight-mix-blend-mode)
+			-
+				label: Off
+				value: normal
+	-
+		id: canvas
+		title: Canvas
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: canvas-dot-pattern
+		title: Canvas dot pattern
+		description: Color for background dot pattern
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-blocks
+		title: Code blocks
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: code-size
+		title: Code font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 13px
+	-
+		id: minimal-code-scroll
+		title: Scroll long lines
+		description: Turns off line wrap for code
+		type: class-toggle
+		default: false
+	-
+		id: code-background
+		title: Code background color
+		description: Background for code blocks
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-normal
+		title: Code text color
+		description: Color of code when syntax highlighting is not present
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: syntax-highlighting
+		title: Syntax highlighting
+		type: heading
+		level: 3
+		collapsed: false
+	-
+		id: code-comment
+		title: "Syntax: comments"
+		description: Syntax highlighting for comments
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-function
+		title: "Syntax: functions"
+		description: Syntax highlighting for functions
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-keyword
+		title: "Syntax: keywords"
+		description: Syntax highlighting for keywords
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-important
+		title: "Syntax: important"
+		description: Syntax highlighting for important text
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-operator
+		title: "Syntax: operators"
+		description: Syntax highlighting for operators
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-property
+		title: "Syntax: properties"
+		description: Syntax highlighting for properties
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-punctuation
+		title: "Syntax: punctuation"
+		description: Syntax highlighting for punctuation
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-string
+		title: "Syntax: strings"
+		description: Syntax highlighting for strings
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-tag
+		title: "Syntax: tags"
+		description: Syntax highlighting for tags
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: code-value
+		title: "Syntax: values"
+		description: Syntax highlighting for values
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: dataview
+		title: Dataview
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: trim-cols
+		title: Trim Dataview columns
+		description: Disables word wrapping in table cells, and trims long text
+		type: class-toggle
+		default: true
+	-
+		id: max-col-width
+		title: Dataview maximum column width
+		description: Maximum width for Dataview columns, accepts any CSS width value
+		type: variable-text
+		default: 18em
+	-
+		id: embed-blocks
+		title: Embeds and transclusions
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: embed-strict
+		title: Use strict embed style globally
+		description: Transclusions appear seamlessly in the flow of text. Can be enabled per file using the embed-strict helper class
+		type: class-toggle
+		default: false
+	-
+		id: embed-hide-title
+		title: Hide embed titles
+		description: Hide title of the transcluded file
+		type: class-toggle
+		default: false
+	-
+		id: embed-underline
+		title: Underline embedded text
+		description: Transcluded text is underlined. Can be enabled per file using the embed-underline helper class
+		type: class-toggle
+		default: false
+	-
+		id: embed-decoration-style
+		title: Embedded text underline style
+		type: variable-select
+		description: Requires underlines to be enabled
+		allowEmpty: true
+		default: solid
+		options:
+			-
+				label: Solid
+				value: solid
+			-
+				label: Dashed
+				value: dashed
+			-
+				label: Dotted
+				value: dotted
+			-
+				label: Double
+				value: double
+			-
+				label: Wavy
+				value: wavy
+	-
+		id: embed-decoration-color
+		title: Embedded text underline color
+		type: variable-themed-color
+		description: Requires underlines to be enabled
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: graphs
+		title: Graphs
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: graph-line
+		title: Line color
+		description: Changing graph colors requires closing and reopening graph panes or restarting Obsidian
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: graph-node
+		title: Node color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: graph-node-focused
+		title: Active node color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-  
+		id: graph-node-tag
+		title: Tag node color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-  
+		id: graph-node-attachment
+		title: Attachment node color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-  
+		id: graph-node-unresolved
+		title: Unresolved node color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: headings
+		title: Headings
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: level-1-headings
+		title: Level 1 Headings
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: h1-font
+		title: H1 font
+		description: Name of the font as it appears on your system
+		type: variable-text
+		default: ''
+	-
+		id: h1-size
+		title: H1 font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 1.125em
+	-
+		id: h1-weight
+		title: H1 font weight
+		type: variable-number-slider
+		default: 600
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: h1-color
+		title: H1 text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: h1-variant
+		title: H1 font variant
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Small caps
+				value: small-caps
+			-
+				label: All small caps
+				value: all-small-caps 
+	-
+		id: h1-style
+		title: H1 font style
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Italic
+				value: italic
+	-
+		id: h1-l
+		title: H1 divider line
+		description: Adds a border below the heading
+		type: class-toggle
+		default: false
+	-
+		id: level-2-headings
+		title: Level 2 Headings
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: h2-font
+		title: H2 font
+		description: Name of the font as it appears on your system
+		type: variable-text
+		default: ''
+	-
+		id: h2-size
+		title: H2 font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 1em
+	-
+		id: h2-weight
+		title: H2 font weight
+		type: variable-number-slider
+		default: 600
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: h2-color
+		title: H2 text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: h2-variant
+		title: H2 font variant
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Small caps
+				value: small-caps
+			-
+				label: All small caps
+				value: all-small-caps
+	-
+		id: h2-style
+		title: H2 font style
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Italic
+				value: italic
+	-
+		id: h2-l
+		title: H2 divider line
+		description: Adds a border below the heading
+		type: class-toggle
+		default: false
+	-
+		id: level-3-headings
+		title: Level 3 Headings
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: h3-font
+		title: H3 font
+		description: Name of the font as it appears on your system
+		type: variable-text
+		default: ''
+	-
+		id: h3-size
+		title: H3 font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 1em
+	-
+		id: h3-weight
+		title: H3 font weight
+		type: variable-number-slider
+		default: 600
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: h3-color
+		title: H3 text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: h3-variant
+		title: H3 font variant
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Small caps
+				value: small-caps
+			-
+				label: All small caps
+				value: all-small-caps
+	-
+		id: h3-style
+		title: H3 font style
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Italic
+				value: italic
+	-
+		id: h3-l
+		title: H3 divider line
+		description: Adds a border below the heading
+		type: class-toggle
+		default: false
+	-
+		id: level-4-headings
+		title: Level 4 Headings
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: h4-font
+		title: H4 font
+		description: Name of the font as it appears on your system
+		type: variable-text
+		default: ''
+	-
+		id: h4-size
+		title: H4 font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 0.9em
+	-
+		id: h4-weight
+		title: H4 font weight
+		type: variable-number-slider
+		default: 500
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: h4-color
+		title: H4 text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: h4-variant
+		title: H4 font variant
+		type: variable-select
+		allowEmpty: false
+		default: small-caps
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Small caps
+				value: small-caps
+			-
+				label: All small caps
+				value: all-small-caps 
+	-
+		id: h4-style
+		title: H4 font style
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Italic
+				value: italic
+	-
+		id: h4-l
+		title: H4 divider line
+		description: Adds a border below the heading
+		type: class-toggle
+		default: false   
+	-
+		id: level-5-headings
+		title: Level 5 Headings
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: h5-font
+		title: H5 font
+		description: Name of the font as it appears on your system
+		type: variable-text
+		default: ''
+	- 
+		id: h5-size
+		title: H5 font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 0.85em
+	-
+		id: h5-weight
+		title: H5 font weight
+		type: variable-number-slider
+		default: 500
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: h5-color
+		title: H5 text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: h5-variant
+		title: H5 font variant
+		type: variable-select
+		allowEmpty: false
+		default: small-caps
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Small caps
+				value: small-caps
+			-
+				label: All small caps
+				value: all-small-caps 
+	-
+		id: h5-style
+		title: H5 font style
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Italic
+				value: italic
+	-
+		id: h5-l
+		title: H5 divider line
+		description: Adds a border below the heading
+		type: class-toggle
+		default: false
+	-
+		id: level-6-headings
+		title: Level 6 Headings
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: h6-font
+		title: H6 font
+		description: Name of the font as it appears on your system
+		type: variable-text
+		default: ''
+	-
+		id: h6-size
+		title: H6 font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 0.85em
+	-
+		id: h6-weight
+		title: H6 font weight
+		type: variable-number-slider
+		default: 400
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: h6-color
+		title: H6 text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: h6-variant
+		title: H6 font variant
+		type: variable-select
+		allowEmpty: false
+		default: small-caps
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Small caps
+				value: small-caps
+			-
+				label: All small caps
+				value: all-small-caps
+	-
+		id: h6-style
+		title: H6 font style
+		type: variable-select
+		allowEmpty: false
+		default: normal
+		options:
+			-
+				label: Normal
+				value: normal
+			-
+				label: Italic
+				value: italic
+	-
+		id: h6-l
+		title: H6 divider line
+		type: class-toggle
+		description: Adds a border below the heading
+		default: false
+	-
+		id: icons
+		title: Icons
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: icon-muted
+		title: Icon opacity (inactive)
+		type: variable-number-slider
+		default: 0.5
+		min: 0.25
+		max: 1
+		step: 0.05
+	-
+		id: icon-color
+		title: Icon color
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: icon-color-hover
+		title: Icon color (hover)
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: icon-color-active
+		title: Icon color (active)
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: icon-color-focused
+		title: Icon color (focused)
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: images
+		title: Images
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: image-muted
+		title: Image opacity in dark mode
+		description: Level of fading for images in dark mode. Hover over images to display at full brightness.
+		type: variable-number-slider
+		default: 0.7
+		min: 0.25
+		max: 1
+		step: 0.05
+	-
+		id: zoom-off
+		title: Disable image zoom
+		description: Turns off click + hold to zoom images
+		type: class-toggle
+	-
+		id: image-grid-fit
+		title: Image grid crop
+		description: Sets how images get cropped in a grid
+		type: variable-select
+		default: cover
+		options:
+			-
+				label: Crop to fit
+				value: cover
+			-
+				label: Show full image
+				value: contain
+	-
+		id: image-grid-background
+		title: Image grid background
+		description: Background of images in cells, useful when images are not cropped to fit
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: indentation-guides
+		title: Indentation guides
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: ig-adjust-reading
+		title: Horizontal adjustment in reading mode
+		type: variable-number-slider
+		default: -0.65
+		min: -1.2
+		max: 0
+		step: 0.05
+		format: em
+	-
+		id: ig-adjust-edit
+		title: Horizontal adjustment in edit mode
+		type: variable-number-slider
+		default: -1
+		min: -10
+		max: 10
+		step: 1
+		format: px
+	-
+		id: indentation-guide-color
+		title: Indentation guide color
+		type: variable-themed-color
+		format: hex
+		opacity:  true
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: indentation-guide-color-active
+		title: Indentation guide color (active)
+		type: variable-themed-color
+		format: hex
+		opacity:  true
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: links
+		title: Links
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: links-internal
+		title: Internal links
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: link-color
+		title: Internal link color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: link-color-hover
+		title: Internal link color (hover)
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: link-unresolved-opacity
+		title: Unresolved link opacity
+		type: variable-number-slider
+		default: 0.7
+		min: 0.25
+		max: 1
+		step: 0.05
+	-
+		id: link-unresolved-color
+		title: Unresolved link color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: link-unresolved-decoration-color
+		title: Unresolved link underline color
+		type: variable-themed-color
+		format: hex
+		opacity:  true
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: links-external
+		title: External links
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: link-external-color
+		title: External link color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: link-external-color-hover
+		title: External link color (hover)
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: lists
+		title: Lists and tasks
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: checkbox-color
+		title: Checkbox color
+		description: Background color for completed tasks
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: checkbox-shape
+		title: Checkbox shape
+		type: class-select
+		allowEmpty: false
+		default: checkbox-circle
+		options:
+			-
+				label: Circle
+				value: checkbox-circle
+			-
+				label: Square
+				value: checkbox-square
+	-
+		id: minimal-strike-lists
+		title: Strike completed tasks
+		description: Adds strikethrough line and greyed text for completed tasks
+		type: class-toggle
+		default: false
+	-
+		id: list-spacing
+		title: List item spacing
+		description: Vertical space between list items in em units
+		type: variable-number-slider
+		default: 0.075
+		min: 0
+		max: 0.3
+		step: 0.005
+		format: em
+	-
+		id: list-indent
+		title: Nested list indentation
+		description: Horizontal space from left in em units
+		type: variable-number-slider
+		default: 2
+		min: 1
+		max: 3.5
+		step: 0.1
+		format: em
+	-
+		id: sidebars
+		title: Sidebars
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: sidebar-lines-off
+		title: Disable sidebar relationship lines
+		description: Turns off lines in file navigation
+		type: class-toggle
+	-
+		id: sidebar-tabs-style
+		title: Sidebar tab style
+		type: class-select
+		allowEmpty: false
+		default: sidebar-tabs-default
+		options:
+			-
+				label: Index round
+				value: sidebar-tabs-index
+			-
+				label: Index square
+				value: sidebar-tabs-square
+			-
+				label: Modern compact
+				value: sidebar-tabs-default
+			-
+				label: Modern wide
+				value: sidebar-tabs-wide
+			-
+				label: Underline
+				value: sidebar-tabs-underline
+	-
+		id: mobile-left-sidebar-width
+		title: Mobile left sidebar width
+		description: Maximum width for pinned left sidebar on mobile
+		type: variable-number
+		default: 280
+		format: pt
+	-
+		id: mobile-right-sidebar-width
+		title: Mobile right sidebar width
+		description: Maximum width for pinned right sidebar on mobile
+		type: variable-number
+		default: 240
+		format: pt
+	-
+		id: tables
+		title: Tables
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: table-text-size
+		title: Table font size
+		description: All of the following settings apply to all tables globally. To turn on these features on a per-note basis use helper classes. See documentation.
+		type: variable-text
+		default: 1em
+	-
+		id: maximize-tables-off
+		title: Maximize table width (beta)
+		description: Tables fill the width of the line
+		type: class-select
+		allowEmpty: false
+		default: maximize-tables
+		options:
+			-
+				label: Always
+				value: maximize-tables
+			-
+				label: Automatic
+				value: maximize-tables-auto
+			-
+				label: Never
+				value: maximize-tables-off
+	-
+		id: row-lines
+		title: Row lines
+		description: Display borders between table rows globally
+		type: class-toggle
+		default: false
+	-
+		id: col-lines
+		title: Column lines
+		description: Display borders between table columns globally
+		type: class-toggle
+		default: false
+	-
+		id: table-lines
+		title: Cell lines
+		description: Display borders around all table cells globally
+		type: class-toggle
+		default: false 
+	-
+		id: row-alt
+		title: Striped rows
+		description: Display striped background in alternating table rows globally
+		type: class-toggle
+		default: false
+	-
+		id: col-alt
+		title: Striped columns
+		description: Display striped background in alternating table columns globally
+		type: class-toggle
+		default: false
+	-
+		id: table-tabular
+		title: Tabular figures
+		description: Use fixed width numbers in tables globally
+		type: class-toggle
+		default: false
+	-
+		id: table-numbers
+		title: Row numbers
+		description: Display row numbers in tables globally
+		type: class-toggle
+		default: false
+	-
+		id: table-nowrap
+		title: Disable line wrap
+		description: Turn off line wrapping in table cells globally
+		type: class-toggle
+		default: false
+	-
+		id: row-hover
+		title: Highlight active row
+		description: Highlight rows on hover
+		type: class-toggle
+		default: false
+	-
+		id: table-row-background-hover
+		title: Active row background
+		description: Background color for hovered tables rows
+		type: variable-themed-color
+		format: hex
+		opacity: true
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: tabs
+		title: Tabs
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: header-height
+		title: Tab bar height
+		type: variable-text
+		default: 40px
+	-
+		id: tabs-style
+		title: Tab style
+		type: class-select
+		allowEmpty: false
+		default: tabs-default
+		options:
+			-
+				label: Index round
+				value: tabs-default
+			-
+				label: Index square
+				value: tabs-square
+			-
+				label: Modern
+				value: tabs-modern
+			-
+				label: Underline
+				value: tabs-underline
+	-
+		id: minimal-tab-text-color
+		title: Tab text color
+		type: variable-themed-color
+		format: hex
+		opacity: true
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: minimal-tab-text-color-active
+		title: Tab text color (active)
+		type: variable-themed-color
+		format: hex
+		opacity: true
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: tab-stacks
+		title: Tab stacks
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: tab-stacked-pane-width
+		title: Stacked width
+		type: variable-number
+		description: Width of a stacked tab in pixels
+		default: 700
+		format: px
+	-
+		id: tab-stacked-header-width
+		title: Spine width
+		type: variable-number
+		description: Width of the spine in pixels
+		default: 40
+		format: px
+	-
+		id: tab-stacked-spine-orientation
+		title: Spine text orientation
+		type: class-select
+		default: tab-stack-top
+		options:
+			-
+				label: Top
+				value: tab-stack-top
+			-
+				label: Top flipped
+				value: tab-stack-top-flipped
+			-
+				label: Bottom
+				value: tab-stack-bottom
+			-
+				label: Bottom flipped
+				value: tab-stack-bottom-flipped
+			-
+				label: Center
+				value: tab-stack-center
+			-
+				label: Center flipped
+				value: tab-stack-center-flipped
+	-
+		id: tags
+		title: Tags
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: minimal-unstyled-tags
+		title: Plain tags
+		description: Tags will render as normal text, overrides settings below
+		type: class-toggle
+		default: false
+	-
+		id: tag-radius
+		title: Tag shape
+		type: variable-select
+		default: 14px
+		options:
+			-
+				label: Pill
+				value: 14px
+			-
+				label: Rounded
+				value: 4px
+			-
+				label: Square
+				value: 0px
+	-
+		id: tag-border-width
+		title: Tag border width
+		type: variable-select
+		default: 1px
+		options:
+			-
+				label: None
+				value: 0
+			-
+				label: Thin
+				value: 1px
+			-
+				label: Thick
+				value: 2px
+	-
+		id: tag-color
+		title: Tag text color
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: tag-background
+		title: Tag background color
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: tag-background-hover
+		title: Tag background color (hover)
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: text
+		title: Text
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: tx1
+		title: Normal text color
+		type: variable-themed-color
+		description: Primary text color used by default across all elements
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: hl1
+		title: Selected text background
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: hl2
+		title: Highlighted text background
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: tx2
+		title: Muted text color
+		description: Secondary text such as sidebar note titles and table headings
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: tx3
+		title: Faint text color
+		description: tertiary text such as input placeholders, empty checkboxes, and disabled statuses
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: italic-color
+		title: Italic text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: bold-color
+		title: Bold text color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: bold-weight
+		title: Bold text weight
+		type: variable-number-slider
+		default: 600
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: spacing-p
+		title: Paragraph spacing
+		description: Space between paragraphs in reading mode
+		type: variable-text
+		default: 0.75em
+	-
+		id: titles
+		title: Titles
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: tab-title-bar
+		title: Tab title bar
+		description: Tab title bar must be turned on in Appearance settings
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: file-header-visibility
+		title: Tab title visibility
+		description: Visibility of the tab title text
+		type: class-select
+		default: minimal-tab-title-hover
+		options:
+			-
+				label: Hover only
+				value: minimal-tab-title-hover
+			-
+				label: Hidden
+				value: minimal-tab-title-hidden
+			-
+				label: Visible
+				value: minimal-tab-title-visible
+	-
+		id: file-header-font-size
+		title: Tab title font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 0.9em
+	-
+		id: file-header-font-weight
+		title: Tab title font weight
+		type: variable-number-slider
+		default: 400
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: file-header-justify
+		title: Tab title alignment
+		type: variable-select
+		default: center
+		options:
+			-
+				label: Center
+				value: center
+			-
+				label: Left
+				value: left
+	-
+		id: title-color
+		title: Tab title text color (active)
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: title-color-inactive
+		title: Tab title text color (inactive)
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: inline-title
+		title: Inline title
+		description: Inline titles must be turned on in Appearance settings
+		type: heading
+		level: 3
+		collapsed: true
+	-
+		id: inline-title-font
+		title: Inline title font
+		description: Name of the font as it appears on your system
+		type: variable-text
+		default: ''
+	-
+		id: inline-title-size
+		title: Inline title font size
+		description: Accepts any CSS font-size value
+		type: variable-text
+		default: 1.125em
+	-
+		id: inline-title-weight
+		title: Inline title font weight
+		type: variable-number-slider
+		default: 600
+		min: 100
+		max: 900
+		step: 100
+	-
+		id: inline-title-color
+		title: Inline title text color (active)
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: translucency
+		title: Translucency
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: workspace-background-translucent
+		title: Translucent background color
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: window-frame
+		title: Window frame
+		type: heading
+		level: 2
+		collapsed: true
+	-
+		id: window-title-off
+		title: Hide window frame title
+		description: Hide title in the custom title bar
+		type: class-toggle
+	-
+		id: frame-background
+		title: Frame background
+		description: Requires colorful window frame
+		type: variable-themed-color
+		opacity: true
+		format: hsl-split
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: frame-icon-color
+		title: Frame icon color
+		description: Requires colorful frame
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: titlebar-text-color-focused
+		title: Frame title color (focused)
+		description: Requires custom title bar
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: titlebar-text-color
+		title: Frame title color (inactive)
+		description: Requires custom title bar
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+	-
+		id: titlebar-text-weight
+		title: Frame title font weight
+		description: Requires custom title bar
+		type: variable-number-slider
+		default: 600
+		min: 100
+		max: 900
+		step: 100
+*/
+
+/* @settings
+name: Minimal Cards
+id: minimal-cards-style
+settings:
+	-
+		id: cards-min-width
+		title: Card minimum width
+		type: variable-text
+		default: 180px
+	-
+		id: cards-max-width
+		title: Card maximum width
+		description: Default fills the available width, accepts valid CSS units
+		type: variable-text
+		default: 1fr
+	-
+		id: cards-mobile-width
+		title: Card minimum width on mobile
+		type: variable-text
+		default: 120px
+	-
+		id: cards-padding
+		title: Card padding
+		type: variable-text
+		default: 1.2em
+	-
+		id: cards-image-height
+		title: Card maximum image height
+		type: variable-text
+		default: 400px
+	-
+		id: cards-border-width
+		title: Card border width
+		type: variable-text
+		default: 1px
+	- 
+		id: cards-background
+		title: Card background color
+		type: variable-themed-color
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+*/
+
+
+/*
+ a *uthor: FireIsGood
+ source: https://codepen.io/fireisgood/pen/eYQmyPJ
+ */
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
+
+.progress-bar {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background-color: var(--background-primary);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.progress-bar-message {
+    margin-bottom: var(--size-4-8);
+    opacity: 1;
+    color: var(--text-muted);
+}
+.progress-bar-indicator {
+    position: relative;
+    height: 8px;
+    margin: 0 10vw;
+    width: 90vw;
+    overflow-x: hidden;
+    border-radius: 3px;
+}
+.progress-bar-line {
+    position: absolute;
+    opacity: 0.4;
+    background-color: var(--interactive-accent);
+    width: 150%;
+    height: 8px;
+}
+.progress-bar-subline {
+    position: absolute;
+    background-color: var(--interactive-accent);
+    height: 8px;
+}
+.progress-bar-subline.mod-increase {
+    animation: increase 2s infinite;
+}
+.progress-bar-subline.mod-decrease {
+    animation: decrease 2s 0.5s infinite;
+}
+.progress-bar .progress-bar-subline {
+    transition: width 150ms ease-in-out;
+}
+@keyframes increase {
+    from {
+        left: -5%;
+        width: 5%;
+    }
+    to {
+        left: 130%;
+        width: 100%;
+    }
+}
+@keyframes decrease {
+    from {
+        left: -80%;
+        width: 80%;
+    }
+    to {
+        left: 110%;
+        width: 10%;
+    }
+}
+
+/**** My code ****/
+
+/* Text trees */
+
+.progress-bar-message::before {
+    content: "🌺 ";
+}
+.progress-bar-message::after {
+    content: " 🌺";
+}
+
+/* Progress bars */
+
+body {
+    --bar-height: 64px;
+}
+
+.progress-bar-indicator {
+    height: var(--bar-height);
+    overflow-y: hidden;
+}
+.progress-bar-indicator {
+    border-radius: var(--bar-height);
+}
+.progress-bar-line,
+.progress-bar-subline {
+    overflow: hidden;
+    border-radius: var(--bar-height);
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+:root .progress-bar-subline {
+    animation-duration: 8s;
+    animation-timing-function: ease-out;
+}
+:root .mod-decrease {
+    animation-name: increase-special;
+}
+:root .mod-decrease {
+    animation-name: decrease-special;
+    animation-delay: 2s;
+}
+
+.progress-bar-subline::before {
+    content: "";
+    height: 100%;
+    aspect-ratio: 1/1;
+    background-image: url("https://d1w8c6s6gmwlek.cloudfront.net/retrogametees.com/overlays/179/236/17923636.png");
+    background-size: cover;
+    background-position: top -25% center;
+}
+/* .mod-decrease::before {
+ * right: 0;
+ * text-align: left;
+ } * */
+
+@keyframes increase-special {
+    from {
+        left: 0%;
+        width: 0%;
+    }
+    to {
+        left: 120%;
+        width: 100%;
+    }
+}
+
+@keyframes decrease-special {
+    from {
+        left: -100%;
+        width: 100%;
+    }
+    to {
+        left: 120%;
+        width: 0%;
+    }
+}
+
+/*
+ a *uthor: sailKite
+ source: https://discord.com/channels/686053708261228577/702656734631821413/1168178314318458980
+ */
+
+.container#calendar-container .calendar {
+    & > thead > tr:first-of-type {
+        & > th:nth-child(1) {
+            color: red;
+        }
+        & > th:nth-child(2) {
+            color: orange;
+        }
+        & > th:nth-child(3) {
+            color: yellow;
+        }
+        & > th:nth-child(4) {
+            color: green;
+        }
+        & > th:nth-child(5) {
+            color: blue;
+        }
+        & > th:nth-child(6) {
+            color: indigo;
+        }
+        & > th:nth-child(7) {
+            color: violet;
+        }
+    }
+}
+
